@@ -44,8 +44,14 @@ jobs:
         echo "configs/templates/$TNAME.config not found "
         exit 1
         fi
-        sed -i '/CONFIG_FIRMWARE_INCLUDE_SSSERVER/d' .config #删除配置项SS server
+        
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS/d' .config #删除配置项SS plus+
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER/d' .config #删除配置项DNSFORWARDER
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_TUNSAFE/d' .config
+        
         echo "CONFIG_FIRMWARE_INCLUDE_TUNSAFE=y" >> .config #TUNSAFE
+        echo "CONFIG_FIRMWARE_INCLUDE_DNSFORWARDER=n" >> .config #DNSFORWARDER
+        echo "CONFIG_FIRMWARE_INCLUDE_SHADOWSOCKS=n" >> .config #SS plus+
         
         sudo ./clear_tree
         sudo ./build_firmware_modify $TNAME
