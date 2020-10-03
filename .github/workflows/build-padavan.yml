@@ -37,13 +37,16 @@ jobs:
         sudo mkdir -p /opt/images/
     - name: Build Firmware
       env:
-        TNAME: K2P_nano-5.0
+        TNAME: NEWIFI-MINI
       run: |
         cd /opt/rt-n56u/trunk
         if [ ! -f configs/templates/$TNAME.config ] ; then
         echo "configs/templates/$TNAME.config not found "
         exit 1
         fi
+        sed -i '/CONFIG_FIRMWARE_INCLUDE_SSSERVER/d' .config #删除配置项SS server
+        echo "CONFIG_FIRMWARE_INCLUDE_TUNSAFE=y" >> .config #TUNSAFE
+        
         sudo ./clear_tree
         sudo ./build_firmware_modify $TNAME
         sudo mv -f images/*.trx /opt/images/
